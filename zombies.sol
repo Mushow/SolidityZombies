@@ -1,16 +1,24 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.4.19;
 
-contract zombies {
+contract ZombieFactory {
 
-struct Zombie {
+    uint private dnaDigits = 16;
+    uint private dnaModulus = 10 ** dnaDigits;
+
+    struct Zombie {
         string name;
         uint dna;
     }
 
     Zombie[] public zombies;
 
-    function createZombie(string memory _name, uint _dna) public {
+    function _createZombie(string _name, uint _dna) private {
         zombies.push(Zombie(_name, _dna));
+    }
+
+    function _generateRandomDna(string _str) private view returns (uint) {
+        uint rand = uint(keccak256(_str));
+        return rand % dnaModulus;
     }
 
 }
